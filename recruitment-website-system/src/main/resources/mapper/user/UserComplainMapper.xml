@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.recuriment.mapper.user.UserComplainMapper">
+    <sql id="tableName">
+        user_complain
+    </sql>
+
+    <sql id="baseColumn">
+        id,user_id,c_id,complain,gmt_create
+    </sql>
+    <select id="getList" resultType="com.recuriment.domain.pojo.user.UserComplain">
+        SELECT
+            c.*,
+            u.nick_name AS uName,
+            cc.c_name
+        FROM
+            user_complain c
+                LEFT JOIN user u ON c.user_id = u.id
+                LEFT JOIN company_info cc ON c.c_id = cc.id
+    </select>
+
+</mapper>

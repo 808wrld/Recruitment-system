@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.recuriment.mapper.user.UserMapper">
+    <select id="getUserJober" resultType="com.recuriment.domain.dto.user.UserJoberDto">
+        SELECT u.id, u.username, i.sex, i.real_name,i.birthday, i.education, i.mobile FROM `user` u left JOIN  user_info i on u.id = i.user_id where u.role_id = 2
+    </select>
+    <select id="getUserCompanyManager" resultType="com.recuriment.domain.dto.user.UserCompanyManagerDto">
+        SELECT
+            u.id, u.username, i.c_name, i.c_address, i.c_type,i.c_contact
+        FROM
+            `user` u
+                left JOIN company_info i ON u.id = i.user_id
+        where u.role_id = 3
+    </select>
+</mapper>

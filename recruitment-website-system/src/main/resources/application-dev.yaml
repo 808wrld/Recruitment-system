@@ -1,0 +1,52 @@
+server:
+  port: 9999
+  servlet:
+    context-path: /recruiment-website-system
+spring:
+  datasource:
+    dynamic:
+      hikari:
+        connection-timeout: 30000
+        max-lifetime: 1800000
+        max-pool-size: 15
+        min-idle: 5
+        connection-test-query: select 1
+        pool-name: EircHikarriCp
+      primary: base
+      datasource:
+        base:
+          username: root
+          password: qyf11302
+          driver-class-name: com.mysql.jdbc.Driver
+          url: jdbc:mysql://localhost:3306/recuriment_website?useSSL=false&useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2b8
+  ##sql日志
+    props:
+      sql:
+        show: false
+  ##mongoDB
+##JsonWebToken
+jwt:
+  header: Authorization
+  tokenHead: Bearer
+  secret: 123456
+  access_token:
+    expiration: 720 # 12小时过期时间
+  refresh_token:
+    expiration: 120  # 120分钟刷新时间
+mybatis-plus:
+  #  configuration:
+  #    log-impl:  org.apache.ibatis.logging.stdout.StdOutImpl
+  type-enums-package: com.recuriment.common.enums
+
+##swagger
+swagger:
+  enable: true
+
+fdfs:
+  # 连接Tracker服务器超时时间
+  connect-timeout: 10000
+  # storage服务器响应的超时时间
+  so-timeout: 3000
+  #  trakcer服务器的数量
+  tracker-list:
+    - 101.35.116.44:22122

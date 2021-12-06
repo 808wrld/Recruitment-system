@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.recuriment.mapper.user.ResumeInfoMapper">
+    <sql id="tableName">
+        resume_info
+    </sql>
+
+    <sql id="baseColumn">
+        id,c_id,j_id,user_id,curriculum_vitae,resume_time,state
+    </sql>
+    <select id="getUserResume" resultType="com.recuriment.domain.dto.user.ResumeInfoDto">
+        SELECT
+            r.*, c.c_address, c.c_name, j.j_name,j.j_experience, CONCAT(j_salary_min,'-',j_salary_max) as jSalary,j.j_number,j_type
+        FROM
+            resume_info r
+                INNER JOIN company_info c ON r.c_id = c.id
+                INNER JOIN job_info j ON r.j_id = j.id
+        where r.user_id = #{userId}
+    </select>
+    <select id="getByCId" resultType="com.recuriment.domain.dto.user.ResumeInfoDto">
+        SELECT
+            r.*, c.c_address, c.c_name, j.j_name,j.j_experience, CONCAT(j_salary_min,'-',j_salary_max) as jSalary,j.j_number,j_type, u.real_name,
+               u.sex, u.birthday, u.education,u.graduate_school,u.graduate_date,u.mobile
+        FROM
+            resume_info r
+                INNER JOIN company_info c ON r.c_id = c.id
+                INNER JOIN job_info j ON r.j_id = j.id
+                INNER JOIN user_info u on r.user_id = u.user_id
+        where r.c_id = #{cId} and r.state &lt; 2
+    </select>
+
+</mapper>

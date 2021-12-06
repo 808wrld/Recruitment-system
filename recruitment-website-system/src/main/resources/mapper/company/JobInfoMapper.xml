@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.recuriment.mapper.company.JobInfoMapper">
+    <sql id="tableName">
+        job_info
+    </sql>
+
+    <sql id="baseColumn">
+        id,c_id,j_name,j_experience,j_education,j_salary_min,j_salary_max
+    </sql>
+    <select id="getHomePageJobList" resultType="com.recuriment.domain.dto.company.JobInfoDto">
+        SELECT
+            j.id AS jId,
+            c.id as CId,
+            c.c_logo,
+            c.c_address,
+            j_name,
+            j_experience as jExperience,
+            j_education as jEducation,
+            c_city,
+            j_number,
+            j_type,
+            c_name,
+            CONCAT(j_salary_min,'-',j_salary_max) as jSalary
+        FROM job_info j INNER JOIN company_info c on j.c_id = c.id
+        <where>
+            <if test="jobVo.cityType != null">
+                and c_city = #{jobVo.cityType}
+            </if>
+            <if test="jobVo.cityType != null">
+                and j_type = #{jobVo.jobType}
+            </if>
+            <if test="jobVo.keyword != null and jobVo.keyword != ''">
+                and (j_name like '%${jobVo.keyword}%' or c_name like '%${jobVo.keyword}%')
+            </if>
+            and now() between j_stime and j_etime
+        </where>
+    </select>
+    <select id="getJobDetail" resultType="com.recuriment.domain.dto.company.JobDetailDto">
+        SELECT
+            j.id AS jId,
+            c.id as CId,
+            c.c_logo,
+            c.c_address,
+            j_name,
+            j_experience as jExperience,
+            j_education as jEducation,
+            c_city,
+            j_number,
+            j_type,
+            CONCAT(j_salary_min,'-',j_salary_max) as jSalary,
+            j_resume,
+            j_require,
+            j_treatment,
+            j_stime,
+            j_etime,
+            c_name
+        FROM job_info j INNER JOIN company_info c on j.c_id = c.id
+        where j.id = #{jId}
+    </select>
+    <select id="getByCId" resultType="com.recuriment.domain.dto.company.JobDetailDto">
+        SELECT
+            j.id AS jId,
+            c.id as CId,
+            c.c_logo,
+            c.c_address,
+            j_name,
+            j_experience as jExperience,
+            j_education as jEducation,
+            c_city,
+            j_number,
+            j_type,
+            CONCAT(j_salary_min,'-',j_salary_max) as jSalary,
+            j_resume,
+            j_require,
+            j_treatment,
+            j_stime,
+            j_etime,
+            c_name
+        FROM job_info j INNER JOIN company_info c on j.c_id = c.id
+        where c.id = #{cId}
+    </select>
+
+</mapper>
